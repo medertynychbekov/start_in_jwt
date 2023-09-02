@@ -40,7 +40,7 @@ public class UserService implements ServiceLayer<UserRequest, UserResponse> {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return userMapper.mapToResponse(userRepository.save(userMapper.mapToEntity(userRequest)));
+        return userMapper.mapToResponse(userRepository.save(user));
     }
 
     @Override

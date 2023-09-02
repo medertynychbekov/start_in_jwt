@@ -32,7 +32,7 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     String lastName;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_and_roles",
             joinColumns = @JoinColumn(name = "user_id"),
