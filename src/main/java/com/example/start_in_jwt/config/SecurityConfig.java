@@ -47,6 +47,8 @@ public class SecurityConfig {
                             try {
                                 authorize
                                         .requestMatchers(HttpMethod.POST, "/user/save").permitAll()
+                                        .requestMatchers("/auth/sing-in").permitAll()
+                                        .requestMatchers("/auth/sing-up").permitAll()
                                         .anyRequest().authenticated()
                                         .and()
                                         .httpBasic(Customizer.withDefaults());
@@ -56,6 +58,7 @@ public class SecurityConfig {
                         })
                 .cors().disable()
                 .csrf().disable();
+        httpSecurity.addFilterBefore()
 
 //        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return httpSecurity.build();
