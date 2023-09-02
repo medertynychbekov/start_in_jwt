@@ -4,15 +4,19 @@ import com.example.start_in_jwt.exception.EntityNotFoundException;
 import com.example.start_in_jwt.model.dto.UserRequest;
 import com.example.start_in_jwt.model.dto.UserResponse;
 import com.example.start_in_jwt.model.dto.mapper.UserMapper;
+import com.example.start_in_jwt.model.enitity.Role;
 import com.example.start_in_jwt.model.enitity.User;
 import com.example.start_in_jwt.repository.UserRepository;
 import com.example.start_in_jwt.service.ServiceLayer;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,13 +27,19 @@ public class UserService implements ServiceLayer<UserRequest, UserResponse> {
 
     UserRepository userRepository;
     UserMapper userMapper;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse save(UserRequest userRequest) {
-//        User user = userMapper.mapToEntity(userRequest);
-//        userRepository.save(user);
-//        UserResponse userResponse = userMapper.mapToResponse(user);
-//        return userResponse;
+
+        User user = userMapper.mapToEntity(userRequest);
+        if (user.getUsername().equals("admin")) {
+            user.setRoles(Collections.singletonList(new Role("ADMIN")));
+        } else {
+            user.setRoles(Collections.singletonList(new Role("USER")));
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         return userMapper.mapToResponse(userRepository.save(userMapper.mapToEntity(userRequest)));
     }
 
