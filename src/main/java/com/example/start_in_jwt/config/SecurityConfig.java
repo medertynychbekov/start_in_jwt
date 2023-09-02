@@ -15,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -58,5 +61,17 @@ public class SecurityConfig {
 
 //        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return httpSecurity.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(false); // Отключаем передачу куки и аутентификационных данных (credentials)
+        config.addAllowedOrigin("*"); // Разрешаем доступ из любого источника
+        config.addAllowedHeader("*"); // Разрешаем все заголовки
+        config.addAllowedMethod("*"); // Разрешаем все HTTP-методы (GET, POST, PUT, DELETE и др.)
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 }
