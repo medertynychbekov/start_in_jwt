@@ -65,7 +65,7 @@ public class SecurityConfig {
                         })
                 .cors().disable()
                 .csrf().disable();
-        httpSecurity.addFilterBefore(JwtFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 //        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return httpSecurity.build();
